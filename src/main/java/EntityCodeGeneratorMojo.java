@@ -183,6 +183,7 @@ public class EntityCodeGeneratorMojo extends AbstractMojo {
       writer.println();
       writer.println("import " + basePackage+ ".entity" + ".EntityService;");
       writer.println("import " + packageName + "." + repositoryName + ";");
+      writer.println("import jakarta.persistence.EntityManager;");
       writer.println("import org.springframework.beans.factory.annotation.Autowired;");
       writer.println("import org.springframework.stereotype.Service;");
       writer.println();
@@ -190,8 +191,8 @@ public class EntityCodeGeneratorMojo extends AbstractMojo {
       writer.println("public class " + serviceName + " extends EntityService<" + className + "> {");
       writer.println();
       writer.println("    @Autowired");
-      writer.println("    public " + serviceName + "(" + repositoryName + " repository) {");
-      writer.println("        super(repository);");
+      writer.println("    public " + serviceName + "(" + repositoryName + " repository, EntityManager entityManager) {");
+      writer.println("        super(repository, entityManager, "+className+".class);");
       writer.println("    }");
       writer.println("}");
     }
