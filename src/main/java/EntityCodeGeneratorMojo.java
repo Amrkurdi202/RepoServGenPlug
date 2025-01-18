@@ -142,14 +142,14 @@ public class EntityCodeGeneratorMojo extends AbstractMojo {
     constructor.addAnnotation("Autowired");
 
     BlockStmt body = new BlockStmt();
-    body.addStatement(new ExpressionStmt(new NameExpr("super(entityService);")));
+    body.addStatement(new ExpressionStmt(new NameExpr("super(entityService)")));
     constructor.setBody(body);
   }
 
   private void addDefaultConstructor(ClassOrInterfaceDeclaration c, String className) {
     ConstructorDeclaration constructor = c.addConstructor(Modifier.Keyword.PUBLIC);
     BlockStmt body = new BlockStmt();
-    body.addStatement(new ExpressionStmt(new NameExpr("super();")));
+    body.addStatement(new ExpressionStmt(new NameExpr("super()")));
     constructor.setBody(body);
   }
 
@@ -183,6 +183,7 @@ public class EntityCodeGeneratorMojo extends AbstractMojo {
       writer.println();
       writer.println("import " + basePackage+ ".entity" + ".EntityService;");
       writer.println("import " + packageName + "." + repositoryName + ";");
+      writer.println("import com.querydsl.jpa.impl.JPAQueryFactory;");
       writer.println("import jakarta.persistence.EntityManager;");
       writer.println("import org.springframework.beans.factory.annotation.Autowired;");
       writer.println("import org.springframework.stereotype.Service;");
@@ -191,8 +192,8 @@ public class EntityCodeGeneratorMojo extends AbstractMojo {
       writer.println("public class " + serviceName + " extends EntityService<" + className + "> {");
       writer.println();
       writer.println("    @Autowired");
-      writer.println("    public " + serviceName + "(" + repositoryName + " repository, EntityManager entityManager) {");
-      writer.println("        super(repository, entityManager, "+className+".class);");
+      writer.println("    public " + serviceName + "(" + repositoryName + " repository, EntityManager entityManager, JPAQueryFactory queryFactory) {");
+      writer.println("        super(repository, entityManager, queryFactory, "+className+".class);");
       writer.println("    }");
       writer.println("}");
     }
